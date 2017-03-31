@@ -1,0 +1,2 @@
+/data false gocd 0660 0770
+/data/plugins true gocd 0660 0770

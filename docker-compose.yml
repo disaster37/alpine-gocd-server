@@ -1,0 +1,12 @@
+version: '2'
+services:
+  gocd-server:
+    tty: true
+    image: webcenter/alpine-gocd-server:latest
+    volumes:
+      - gocd-server-data:/data
+    ports:
+      - 8153:8153
+volumes:
+  gocd-server-data:
+    driver: local

@@ -1,0 +1,46 @@
+#!/usr/bin/with-contenv sh
+
+# Config GoCD Server
+export SERVER_WORK_DIR="{{getv "/config/work-dir" "/data"}}"
+export GO_CONFIG_DIR="{{getv "/config/config-dir" "/data/config"}}"
+export STDOUT_LOG_FILE="{{getv "config/log-file" "/data/logs/gocd-server.log"}}"
+{{- if (exists "/config/memory")}}
+export SERVER_MAX_MEM={{getv "/config/memory"}}
+{{- end}}
+{{- if (exists "/config/agent-key")}}
+export AGENT_KEY={{getv "/config/agent-key"}}
+{{- end}}
+
+# Download plugins
+{{- if ge (len "/plugin") 1}}
+if [ ! -d "${SERVER_WORK_DIR}/plugins/external" ]; then
+    mkdir -p "${SERVER_WORK_DIR}/plugins/external"
+fi
+    {{- range $i, $key := ls "/plugin"}}
+if [ ! -f "${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})" ] || [ "{{getv "/config/force-download-plugins" "false"}}" == "true" ]; then
+echo "Download plugin {{$key}}..."
+curl {{getv (printf "/plugin/%s" $key)}} -Lo ${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})
+fi
+    {{- end}}
+chown -R gocd:gocd "${SERVER_WORK_DIR}/plugins"
+{{- end}}
+
+# Create use account
+{{- if ge (len "/plugin") 1}}
+if [ -f "${SERVER_WORK_DIR}/htpasswd" ]; then
+    rm ${SERVER_WORK_DIR}/htpasswd
+fi
+    {{- range $i, $key := ls "/user"}}
+    htpasswd -csb ${SERVER_WORK_DIR}/htpasswd {{$key}} {{getv (printf "/user/%s" $key)}}
+    {{- end}}
+{{- end}}
+
+
+
+if [ ! -d "${SERVER_WORK_DIR}/logs" ]; then
+    mkdir -p "${SERVER_WORK_DIR}/logs"
+    chown -R gocd:gocd "${SERVER_WORK_DIR}/logs"
+fi
+
+exec s6-setuidgid ${USER} "${APP_HOME}/server.sh"
+
