@@ -31,8 +31,20 @@ if [ -f "${SERVER_WORK_DIR}/htpasswd" ]; then
     rm ${SERVER_WORK_DIR}/htpasswd
 fi
     {{- range $i, $key := ls "/user"}}
-    htpasswd -csb "${SERVER_WORK_DIR}/htpasswd" {{$key}} {{getv (printf "/user/%s" $key)}}
+htpasswd -csb "${SERVER_WORK_DIR}/htpasswd" {{$key}} {{getv (printf "/user/%s" $key)}}
     {{- end}}
+if [ ! -f "${SERVER_WORK_DIR}/config/cruise-config.xml" ]; then
+cat << EOF > ${SERVER_WORK_DIR}/config/cruise-config.xml
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="90">
+  <server>
+    <security>
+      <passwordFile path="/data/htpasswd" />
+    </security>
+  </server>
+</cruise>
+EOF
+fi
 {{- end}}
 
 
