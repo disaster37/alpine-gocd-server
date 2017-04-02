@@ -26,7 +26,7 @@ chown -R gocd:gocd "${SERVER_WORK_DIR}/plugins"
 {{- end}}
 
 # Create use account
-{{- if ge (len "/plugin") 1}}
+{{- if ge (len "/user") 1}}
 if [ -f "${SERVER_WORK_DIR}/htpasswd" ]; then
     rm ${SERVER_WORK_DIR}/htpasswd
 fi
