@@ -22,7 +22,7 @@ echo "Download plugin {{$key}}..."
 curl "{{getv (printf "/plugin/%s" $key)}}" -Lo "${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})"
 fi
     {{- end}}
-chown -R gocd:gocd "${SERVER_WORK_DIR}/plugins"
+chown -R ${USER}:${GROUP} "${SERVER_WORK_DIR}/plugins"
 {{- end}}
 
 # Create use account
@@ -45,6 +45,7 @@ cat << EOF > "${SERVER_WORK_DIR}/config/cruise-config.xml"
   </server>
 </cruise>
 EOF
+chown -R ${USER}:${GROUP} ${SERVER_WORK_DIR}/config
 fi
 {{- end}}
 
