@@ -8,6 +8,7 @@ dest = "/etc/services.d/gocd/run"
 mode = "0744"
 keys = [
   "/config",
-  "/plugin"
+  "/plugin",
+  "/user"
 ]
 EOF
