@@ -6,7 +6,6 @@ This image permit run GoCD Server.
 ## How use it
 
 
-With only one disk:
 ```bash
 docker run -d --name gocd-server \
   -v $PWD/data/gocd-server:/data \
