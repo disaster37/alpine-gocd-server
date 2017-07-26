@@ -31,7 +31,7 @@ if [ -f "${SERVER_WORK_DIR}/htpasswd" ]; then
     rm ${SERVER_WORK_DIR}/htpasswd
 fi
     {{- range $i, $key := ls "/user"}}
-htpasswd -csb "${SERVER_WORK_DIR}/htpasswd" {{$key}} {{getv (printf "/user/%s" $key)}}
+htpasswd -csb "${SERVER_WORK_DIR}/htpasswd" {{$key}} "{{getv (printf "/user/%s" $key)}}"
     {{- end}}
 if [ ! -f "${SERVER_WORK_DIR}/config/cruise-config.xml" ]; then
 mkdir -p "${SERVER_WORK_DIR}/config"
