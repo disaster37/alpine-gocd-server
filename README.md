@@ -38,11 +38,11 @@ The Minio setting is managed by Confd. So you can custom it:
 #### GoCD Server
 
 The following parameters permit to config GoCD server:
-- **GOCD_CONFIG_work-dir**: The directory where GoCD store data. Default is `/data`.
-- **GOCD_CONFIG_config-dir**: The directory where GoCD store config. Default is `/data/config\`.
-- **GOCD_CONFIG_log-file**: The file where GoCD logs stdout. Default is `/data/logs/gocd-server.log`.
+- **GOCD_CONFIG_workdir**: The directory where GoCD store data. Default is `/data`.
+- **GOCD_CONFIG_configdir**: The directory where GoCD store config. Default is `/data/config\`.
+- **GOCD_CONFIG_logfile**: The file where GoCD logs stdout. Default is `/data/logs/gocd-server.log`.
 - **GOCD_CONFIG_memory**: The max memory allowed to JVM.
-- **GOCD_CONFIG_agent-key**: The key to use for auot registration by agent.
+- **GOCD_CONFIG_agentkey**: The key to use for auot registration by agent.
 
 The following parameters permit to add plugins on GoCD server:
 - **GOCD_PLUGIN_NAME = URL**:: It will download the plugin on `/data/plugin/external`.
