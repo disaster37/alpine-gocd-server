@@ -1,14 +1,14 @@
 #!/usr/bin/with-contenv sh
 
 # Config GoCD Server
-export SERVER_WORK_DIR="{{getv "/config/work-dir" "/data"}}"
-export GO_CONFIG_DIR="{{getv "/config/config-dir" "/data/config"}}"
-export STDOUT_LOG_FILE="{{getv "config/log-file" "/data/logs/gocd-server.log"}}"
+export SERVER_WORK_DIR="{{getv "/config/workdir" "/data"}}"
+export GO_CONFIG_DIR="{{getv "/config/configdir" "/data/config"}}"
+export STDOUT_LOG_FILE="{{getv "config/logfile" "/data/logs/gocd-server.log"}}"
 {{- if (exists "/config/memory")}}
 export SERVER_MAX_MEM={{getv "/config/memory"}}
 {{- end}}
-{{- if (exists "/config/agent-key")}}
-export AGENT_KEY="{{getv "/config/agent-key"}}"
+{{- if (exists "/config/agentkey")}}
+export AGENT_KEY="{{getv "/config/agentkey"}}"
 {{- end}}
 
 # Download plugins
@@ -17,7 +17,7 @@ if [ ! -d "${SERVER_WORK_DIR}/plugins/external" ]; then
     mkdir -p "${SERVER_WORK_DIR}/plugins/external"
 fi
     {{- range $i, $key := ls "/plugin"}}
-if [ ! -f "${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})" ] || [ "{{getv "/config/force-download-plugins" "false"}}" == "true" ]; then
+if [ ! -f "${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})" ] || [ "{{getv "/config/forcedownloadplugins" "false"}}" == "true" ]; then
 echo "Download plugin {{$key}}..."
 curl "{{getv (printf "/plugin/%s" $key)}}" -Lo "${SERVER_WORK_DIR}/plugins/external/$(basename {{getv (printf "/plugin/%s" $key)}})"
 fi
